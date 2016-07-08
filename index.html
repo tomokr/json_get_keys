@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+
+  <body>
+    <p>ここにJSONを書いてください</p>
+    <form name="form1" onSubmit="return getdata()" action="javascript:void(0)">
+        <textarea type="text" name="input"></textarea><br>
+        <input type="submit">
+    </form>
+    <p>ここに結果がでます</p>
+    <div id="result"></div>
+
+    <script type="text/javascript">
+        var result = "";
+        var now = 'root';
+
+        function getdata(){
+            var str =  document.form1.input.value;
+            var str_mod = str.replace(/\s+/g, "");
+            var json_str = JSON.parse(str);
+            check(json_str, true);
+        }
+
+        function check(json_str, isFirst){
+            var num_json = 0;
+            var ch_arr = [];
+
+            for(key in json_str){
+                ch_arr[num_json] = 0;
+
+                if(is('String',json_str[key])){
+                    result += now+'[\"'+key+'\"]='+json_str[key]+'<br>';
+                    ch_arr[num_json] = 1;
+                }else if(is('Array',json_str[key])){
+                    i=0;
+                    for(var j in json_str[key]){
+                        now +='[\"'+key+'\"]' +'['+i+']';
+                        check(json_str[key][i], false);
+                        i += 1;
+                    }
+
+                }else{
+                    now += '[\"'+key+'\"]';
+                    check(json_str[key], false);
+                }
+                num_json += 1;
+            }
+            if(isFirst == true) document.getElementById("result").innerHTML = result;//alert(result);
+
+        }
+
+        function is(type, obj) {
+        var clas = Object.prototype.toString.call(obj).slice(8, -1);
+        return obj !== undefined && obj !== null && clas === type;
+        }
+
+
+    </script>
+  </body>
+</html>
