@@ -20,10 +20,11 @@
             var str =  document.form1.input.value;
             var str_mod = str.replace(/\s+/g, "");
             var json_str = JSON.parse(str);
-            check(json_str, true);
+            check(json_str);
+            document.getElementById("result").innerHTML = result;//alert(result);
         }
 
-        function check(json_str, isFirst){
+        function check(json_str){
             var num_json = 0;
             var ch_arr = [];
 
@@ -37,7 +38,7 @@
                     i=0;
                     for(var j in json_str[key]){
                         now +='[\"'+key+'\"]' +'['+i+']';
-                        check(json_str[key][i], false);
+                        check(json_str[key][i]);
                         i += 1;
                     }
 
@@ -47,7 +48,6 @@
                 }
                 num_json += 1;
             }
-            if(isFirst == true) document.getElementById("result").innerHTML = result;//alert(result);
 
         }
 
